@@ -5,7 +5,8 @@
       "outDir": "dist",
       "rootDir": ".",
       "esModuleInterop": true,
-      "strict": true
+      "strict": true,
+      "lib": ["es2020.string"]
     },
     "exclude": ["test/**/*.ts"]
   }
