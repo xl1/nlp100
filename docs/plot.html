@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>plot</title>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <style>html, body, #plot { margin: 0; height: 100vh }</style>
+    </head>
+    <div id="plot"></div>
+    <script>
+    const reader = new FileReader();
+    reader.addEventListener('load', e => {
+        const args = JSON.parse(e.target.result);
+        Plotly.newPlot('plot', ...args);
+    });
+
+    document.addEventListener('dragover', e => e.preventDefault(), false);
+    document.body.addEventListener('drop', e => {
+        e.preventDefault();
+        const file = e.dataTransfer.files[0];
+        if (file) reader.readAsText(file);
+    }, false);
+    </script>
+</html>

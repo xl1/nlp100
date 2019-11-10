@@ -1,4 +1,4 @@
-import { createReadStream } from 'fs';
+import { createReadStream, promises as fs } from 'fs';
 import split2 from 'split2';
 import { join } from 'path';
 
@@ -70,6 +70,33 @@ export async function main() {
     const ranking = [...map].sort(([s, v], [t, w]) => w - v);
     const length = ranking.length;
     console.log(36, ranking.map(([key]) => key));
+
+    const top10 = ranking.slice(0, 10);
+    plot('37.json', [{
+        x: top10.map(([key]) => key),
+        y: top10.map(([, value]) => value / length),
+        type: 'bar'
+    }]);
+
+    plot('38.json', [{
+        x: ranking.map(([, value]) => value / length),
+        type: 'histogram'
+    }], {
+        yaxis: { type: 'log', autorange: true },
+    });
+
+    plot('39.json', [{
+        x: ranking.map((_, i) => i),
+        y: ranking.map(([, value]) => value / length),
+        type: 'scatter'
+    }], {
+        xaxis: { type: 'log', autorange: true },
+        yaxis: { type: 'log', autorange: true },
+    });
+}
+
+function plot(filename: string, ...args: unknown[]) {
+    fs.writeFile(join(__dirname, `../assets/${filename}`), JSON.stringify(args));
 }
 
 if (!module.parent) {
